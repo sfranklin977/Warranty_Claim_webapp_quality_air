@@ -1,35 +1,32 @@
 # -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
-
+"""Copyright (c) 2019 - present AppSeed.us"""
 from django.contrib import admin
-
-# Register your models here.
 from . import models as home_models
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 
-# Step 1: Define a resource class for the model
-class WarrantFormResource(resources.ModelResource):
+class WarrantyFormResource(resources.ModelResource):
     class Meta:
-        model = home_models.WarrantyForm  # The model you're adding import/export for
-        # You can specify fields to include/exclude during import/export
-        fields = ('id', 'claim_number', 'Last_Name', 'First_Name', 'warranty_part', 'claim_submission_date',
-                  'claim_approval_date', 'amount_submitted', 'claim_paid_date',
-                  'amount_paid', 'submitted_by', 'notes',)
-        # You can also exclude fields by using the `exclude` option
-        # exclude = ('id',)
+        model = home_models.WarrantyForm
+        fields = (
+            'id', 'job_number', 'tech_name',
+            'customer_name', 'Last_Name', 'First_Name',
+            'warranty_part', 'warranty_type',
+            'claim_number', 'claim_submission_date', 'claim_approval_date',
+            'amount_paid', 'status',
+            'vendor_submission_method', 'vendor_confirmation_number',
+            'vendor_submitted_date',
+            'notes',
+        )
 
 
-# Step 2: Create the Admin class
-class WarrantFormAdmin(ImportExportModelAdmin):
-    resource_class = WarrantFormResource
-    search_help_text = None
-
-    # Other admin customizations can be added here as needed
-
-
-# Step 3: Register the Admin class with the model
-admin.site.register(home_models.WarrantyForm, WarrantFormAdmin)
+@admin.register(home_models.WarrantyForm)
+class WarrantyFormAdmin(ImportExportModelAdmin):
+    resource_class = WarrantyFormResource
+    list_display = [
+        'claim_number', 'job_number', 'customer_name', 'warranty_part',
+        'warranty_type', 'status', 'amount_paid', 'created_at',
+    ]
+    list_filter = ['warranty_type', 'status', 'vendor_submission_method']
+    search_fields = ['claim_number', 'job_number', 'customer_name', 'Last_Name', 'First_Name', 'warranty_part']
