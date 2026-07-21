@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">Vendor Parts Returns</h3>
+          <div>
+            <a href="{% url 'parts-return-add' %}" class="btn btn-primary btn-sm">
+              <i class="ni ni-fat-add"></i> Add New Return
+            </a>
+            <a href="{% url 'parts-return-export' %}" class="btn btn-success btn-sm ml-2">
+              <i class="ni ni-cloud-download-95"></i> Export CSV
+            </a>
+          </div>
+        </div>
+        <div class="card-body">
+          {% render_table table %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
